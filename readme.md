@@ -161,7 +161,6 @@ bot-vagas-telegram/
 ├── vagas/
 ├── agendamento/
 ├── utils/
-├── imagens/
 └── main.py
 ```
 
