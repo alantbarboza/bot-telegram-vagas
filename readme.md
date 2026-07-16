@@ -32,7 +32,7 @@ Atualmente o bot realiza buscas nos seguintes portais:
 * LinkedIn
 * Nerdin
 * Sólides
-* Empregos.com.br
+* Empregos
 * InfoJobs
 * 99Jobs
 
