@@ -108,8 +108,8 @@ Exemplo:
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/alantbarboza/bot-vagas-telegram.git
-cd bot-vagas-telegram
+git clone https://github.com/alantbarboza/bot-telegram-vagas.git
+cd bot-telegram-vagas
 ```
 
 ### 2. Instale as dependências
@@ -155,7 +155,7 @@ python main.py
 ## Estrutura do projeto
 
 ```text
-bot-vagas-telegram/
+bot-telegram-vagas/
 
 ├── bot/
 ├── vagas/
