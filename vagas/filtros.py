@@ -40,10 +40,28 @@ def obter_nome_usuario(chat_id):
     
     return usuarios.get(str(chat_id), {}).get("nome", str(chat_id))
 
-def obter_horario_execucao(user_id):
+def obter_proxima_execucao(user_id):
     usuarios = carregar_usuarios()
 
-    return usuarios[str(user_id)]["hora_execucao"]
+    return usuarios[str(user_id)].get("proxima_execucao")
+
+def salvar_proxima_execucao(user_id, data):
+    usuarios = carregar_usuarios()
+
+    usuarios[str(user_id)]["proxima_execucao"] = data.isoformat()
+
+    with open(
+        USUARIOS_PATH,
+        "w",
+        encoding="utf-8"
+    ) as arquivo:
+
+        dump(
+            usuarios,
+            arquivo,
+            ensure_ascii=False,
+            indent=4
+        )
 
 def obter_filtros_usuario(user_id):
     usuarios = carregar_usuarios()

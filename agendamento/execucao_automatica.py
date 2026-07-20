@@ -3,14 +3,14 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from logging import info
 from vagas.envio import enviar_vagas
-from vagas.filtros import carregar_usuarios
+from vagas.filtros import carregar_usuarios, obter_proxima_execucao, salvar_proxima_execucao
 import bot.comandos as comandos
 
 TZ = ZoneInfo("America/Sao_Paulo")
 
 proximas_execucoes = {}
 
-async def agendar_usuario(chat_id, hora, minuto):
+async def agendar_usuario(chat_id):
 
     global proximas_execucoes
 
@@ -18,21 +18,35 @@ async def agendar_usuario(chat_id, hora, minuto):
 
         agora = datetime.now(TZ)
 
-        proxima_execucao = agora.replace(
-            hour=hora,
-            minute=minuto,
-            second=0,
-            microsecond=0
-        )
+        data_salva = obter_proxima_execucao(chat_id)
 
-        if agora >= proxima_execucao:
-            proxima_execucao += timedelta(days=1)
+        if data_salva:
+            proxima_execucao = datetime.fromisoformat(data_salva)
+
+            if proxima_execucao <= agora:
+
+                proxima_execucao = agora.replace(
+                    hour=proxima_execucao.hour,
+                    minute=proxima_execucao.minute,
+                    second=0,
+                    microsecond=0
+                )
+
+                if proxima_execucao <= agora:
+                    proxima_execucao += timedelta(days=1)
+
+                salvar_proxima_execucao(
+                    chat_id,
+                    proxima_execucao
+                )
+
+        else:
+            info(f"{chat_id} não possui próxima execução cadastrada.")
+            return
 
         proximas_execucoes[str(chat_id)] = proxima_execucao
 
-        segundos = (
-            proxima_execucao - agora
-        ).total_seconds()
+        segundos = max((proxima_execucao - agora).total_seconds(), 0)
 
         info(f"Próxima execução de {chat_id}: {proxima_execucao}")
 
@@ -62,6 +76,15 @@ async def agendar_usuario(chat_id, hora, minuto):
 
             info(f"Execução automática para {chat_id} finalizada.")
 
+            proxima_execucao += timedelta(days=2)
+
+            proximas_execucoes[str(chat_id)] = proxima_execucao
+
+            salvar_proxima_execucao(
+                chat_id,
+                proxima_execucao
+            )
+
         finally:
             comandos.comandos_em_andamento.discard(chave)
 
@@ -70,11 +93,10 @@ async def iniciar_agendador():
 
     usuarios = carregar_usuarios()
 
-    for chat_id, usuario in usuarios.items():
-
-        hora, minuto = map(int, usuario["hora_execucao"].split(":"))
-
-        create_task(agendar_usuario(int(chat_id), hora, minuto))
+    for chat_id in usuarios:
+        create_task(
+            agendar_usuario(int(chat_id))
+        )
 
     info("Agendador iniciado.")
 

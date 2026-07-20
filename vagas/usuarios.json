@@ -1,7 +1,7 @@
 {
     "6406165303": {
         "nome": "Alan",
-        "hora_execucao": "20:00",
+        "proxima_execucao": "2026-07-22T20:00:00-03:00",
         "termos_busca": [
             "desenvolvedor",
             "desenvolvedor junior",
@@ -93,7 +93,7 @@
     },
     "6267955972": {
         "nome": "Yasmin",
-        "hora_execucao": "08:00",
+        "proxima_execucao": "2026-07-22T08:00:00-03:00",
         "termos_busca": [
             "seguranca da informacao",
             "analista de seguranca",
