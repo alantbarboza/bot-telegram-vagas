@@ -35,10 +35,7 @@ async def agendar_usuario(chat_id):
                 if proxima_execucao <= agora:
                     proxima_execucao += timedelta(days=1)
 
-                salvar_proxima_execucao(
-                    chat_id,
-                    proxima_execucao
-                )
+                salvar_proxima_execucao(chat_id, proxima_execucao)
 
         else:
             info(f"{chat_id} não possui próxima execução cadastrada.")
@@ -80,10 +77,7 @@ async def agendar_usuario(chat_id):
 
             proximas_execucoes[str(chat_id)] = proxima_execucao
 
-            salvar_proxima_execucao(
-                chat_id,
-                proxima_execucao
-            )
+            salvar_proxima_execucao(chat_id, proxima_execucao)
 
         finally:
             comandos.comandos_em_andamento.discard(chave)
@@ -94,9 +88,7 @@ async def iniciar_agendador():
     usuarios = carregar_usuarios()
 
     for chat_id in usuarios:
-        create_task(
-            agendar_usuario(int(chat_id))
-        )
+        create_task(agendar_usuario(int(chat_id)))
 
     info("Agendador iniciado.")
 
