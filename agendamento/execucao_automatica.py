@@ -82,7 +82,6 @@ async def agendar_usuario(chat_id):
         finally:
             comandos.comandos_em_andamento.discard(chave)
 
-
 async def iniciar_agendador():
 
     usuarios = carregar_usuarios()
