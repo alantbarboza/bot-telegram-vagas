@@ -6,7 +6,7 @@ from aiogram import Dispatcher, Router
 from aiogram.types import Message
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler
 
-from aiohttp import web, ClientSession
+from aiohttp import web
 from asyncio import run, CancelledError, create_task, Event, sleep
 
 from logging import info, warning, basicConfig, INFO, error, getLogger, WARNING, StreamHandler, Formatter
@@ -50,7 +50,6 @@ basicConfig(
 getLogger("aiogram.event").setLevel(WARNING)
 
 load_dotenv()
-TOKEN = getenv("API_KEY")
 WEBHOOK_PATH = "/webhook"
 BASE_URL = getenv("WEBHOOK_URL")
 
